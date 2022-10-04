@@ -4,6 +4,7 @@
 
 | Vitis Version used for AFI Development | Compatible Xilinx Runtime                                                                                          |
 |----------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| 2022.1                                 | AWS FPGA Developer AMI 1.13.x (XRT is pre-installed) or [XRT](https://xilinx.github.io/XRT/2022.1/html/build.html) |
 | 2021.2                                 | AWS FPGA Developer AMI 1.12.x (XRT is pre-installed) or [XRT](https://xilinx.github.io/XRT/2021.2/html/build.html) |
 | 2021.1                                 | AWS FPGA Developer AMI 1.11.x (XRT is pre-installed) or [XRT](https://xilinx.github.io/XRT/2021.1/html/build.html) |
 | 2020.2                                 | AWS FPGA Developer AMI 1.10.x (XRT is pre-installed) or [XRT](https://xilinx.github.io/XRT/2020.2/html/build.html) |

@@ -14,7 +14,7 @@ XDMA is a Linux kernel driver for using DMA and/or User-defined interrupts for A
 <a name="howIKnow"></a>
 **Q: How do I know if the XDMA driver is available and installed?** 
 
-The XDMA driver could be already installed in the latest releases of various Linux distributions and in [AWS FPGA Development AMI available at AWS Marketplace](https://aws.amazon.com/marketplace/pp/B06VVYBLZZ)
+The XDMA driver could be already installed in the latest releases of various Linux distributions and in AWS FPGA Development AMI available at AWS Marketplace
 
 To make sure the driver is installed run next command from your linux shell:
   `$ lsmod | grep xdma`

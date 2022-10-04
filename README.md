@@ -53,10 +53,13 @@ Developers who want to save on cost, could start coding and run simulations on l
 
 AWS marketplace offers multiple versions of the FPGA Developer AMI. The following section table describes the mapping of currently supported developer kit versions to AMI versions.
 
+Note: Please note that the latest version of the developer kit version with xilinx tools 2022.1 does not support cl_uram example
+
 ## Xilinx tool support
 
 | Developer Kit Version | Tool Version Supported | Compatible FPGA Developer AMI Version       |
 |-----------------------|------------------------|---------------------------------------------|
+| 1.4.25+               | 2022.1                 | v1.13.X (Xilinx Vivado/Vitis 2022.1)        |
 | 1.4.23+               | 2021.2                 | v1.12.X (Xilinx Vivado/Vitis 2021.2)        |
 | 1.4.21+               | 2021.1                 | v1.11.X (Xilinx Vivado/Vitis 2021.1)        |
 | 1.4.18+               | 2020.2                 | v1.10.X (Xilinx Vivado/Vitis 2020.2)        |
@@ -66,6 +69,7 @@ AWS marketplace offers multiple versions of the FPGA Developer AMI. The followin
 | 1.4.8 - 1.4.15b       | 2018.3                 | v1.6.0-v1.6.X (Xilinx Vivado/SDx 2018.3)    |
 | 1.4.3 - 1.4.15b       | 2018.2                 | v1.5.0-v1.5.X (Xilinx Vivado/SDx 2018.2)    |
 | ⚠️ 1.3.7 - 1.4.15b    | 2017.4                 | v1.4.0-v1.4.X (Xilinx Vivado/SDx 2017.4) ⚠️ |
+
 
 ⚠️ Developer kit release v1.4.16 will remove support for Xilinx 2017.4, 2018.2, 2018.3 toolsets. While developer kit release v1.4.16 onwards will not support older Xilinx tools, you can still use them using HDK releases v1.4.15b or earlier. 
 Please check out [the latest v1.4.15b release tag from Github](https://github.com/aws/aws-fpga/releases/tag/v1.4.15b) to use Xilinx 2017.4, 2018.2, 2018.3 toolsets.

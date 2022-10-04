@@ -65,7 +65,7 @@ function help {
 
 function check_xdma_driver {
 
-    if lsmod | grep -q 'xdma' ; then
+    if /usr/sbin/lsmod | grep -q 'xdma' ; then
         err_msg "Found XDMA Driver running. Please remove xdma driver using below command"
         err_msg " rmmod xdma"
         return 1
@@ -73,7 +73,7 @@ function check_xdma_driver {
 }
 
 function check_xocl_driver {
-    if lsmod | grep -q 'xocl' ; then
+    if /usr/sbin/lsmod | grep -q 'xocl' ; then
         info_msg "Found 'xocl Driver is installed and running. ' "
     else
         err_msg "XOCL Driver not installed. Please install xocl driver using below instructions"
@@ -142,7 +142,7 @@ info_msg "VIVADO_TOOL_VERSION is $VIVADO_TOOL_VERSION"
 check_kernel_ver
 check_xdma_driver
 
-if [[ "$VIVADO_TOOL_VERSION" =~ .*2019\.2.*  || "$VIVADO_TOOL_VERSION" =~ .*2020\.* || "$VIVADO_TOOL_VERSION" =~ .*2021\.*  ]]; then
+if [[ "$VIVADO_TOOL_VERSION" =~ .*2019\.2.*  || "$VIVADO_TOOL_VERSION" =~ .*2020\.* || "$VIVADO_TOOL_VERSION" =~ .*2021\.* || "$VIVADO_TOOL_VERSION" =~ .*2022\.1.* ]]; then
     info_msg "Xilinx Vivado version is $VIVADO_TOOL_VERSION"
 
     if [ $override == 1 ]; then
@@ -183,7 +183,7 @@ if [[ "$VIVADO_TOOL_VERSION" =~ .*2019\.2.*  || "$VIVADO_TOOL_VERSION" =~ .*2020
        return 1
     fi
 else
-   err_msg "Xilinx Vivado version is $VIVADO_TOOL_VERSION , only 2019.2, 2020.1, 2020.2, 2021.1 or 2021.2 are supported for Vitis "
+   err_msg "Xilinx Vivado version is $VIVADO_TOOL_VERSION , only 2019.2, 2020.1, 2020.2, 2021.1, 2021.2 or 2022.1 are supported for Vitis "
    return 1
 fi
 

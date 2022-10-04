@@ -109,6 +109,13 @@ def check_link(url):
     logger.debug("Checking {}".format(url))
     if re.match(r'https://forums\.aws\.amazon\.com/', url):
         return True
+    '''
+    Ignore links that start with
+    https://aws.amazon.com
+    '''
+    if re.match(r'https://aws\.amazon\.com/', url):
+        return True
+
     try:
         if not urlparse.urlparse(url).netloc:
             return False

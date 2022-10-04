@@ -36,7 +36,7 @@ A developer can execute `$HDK_SHELL_DIR/build/scripts/aws_build_dcp_from_cl.sh` 
 
  1. The environment variable `HDK_SHELL_DIR` should have been set. This is usually done by executing `source hdk_setup.sh` from the HDK root directory
  2. The environment variable `CL_DIR` should have been set pointing to the root directory where the CL exists. The CL root directory should have the `/build` and `/design` subdirectories. One way to make sure to have the right directory is to execute `source $(HDK_DIR)/cl/developer_designs/prepare_new_cl.sh`
- 3. Developer have Xilinx Vivado tools installed, with the supported version by the HDK, and with proper license. If the developer is using AWS supplied [FPGA Development AMI](https://aws.amazon.com/marketplace/pp/B06VVYBLZZ) from AWS marketplace, it includes the README.md how to setup up the tools and license.  
+ 3. Developer have Xilinx Vivado tools installed, with the supported version by the HDK, and with proper license. If the developer is using AWS supplied FPGA Development AMI from AWS marketplace, it includes the README.md how to setup up the tools and license.  
 
 ### 2) Encrypt Source Files
 

@@ -36,7 +36,7 @@ task_label = [
 ]
 
 // Put the latest version last
-def xilinx_versions = [ '2021.2' ]
+def xilinx_versions = [ '2022.1' ]
 
 // We want the default to be the latest.
 def default_xilinx_version = xilinx_versions.last()
@@ -77,6 +77,12 @@ def simulator_tool_default_map = [
          'vcs': 'synopsys/vcs/R-2020.12',
          'questa': 'questa/2020.4',
          'xcelium': 'xcelium/20.09.006'
+     ],
+     '2022.1' : [
+         'vivado': 'xilinx/Vivado/2022.1',
+         'vcs': 'synopsys/vcs/S-2021.09',
+         'questa': 'questa/2021.3',
+         'xcelium': 'xcelium/21.09.002'
      ]
 ]
 

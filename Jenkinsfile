@@ -10,7 +10,7 @@ properties([parameters([
     booleanParam(name: 'test_fpga_tools',                     defaultValue: true,  description: 'Test fpga-* commands on F1'),
     booleanParam(name: 'test_hdk_scripts',                    defaultValue: true,  description: 'Test the HDK setup scripts'),
     booleanParam(name: 'test_sims',                           defaultValue: true,  description: 'Run all Simulations'),
-    booleanParam(name: 'test_non_root_access',                defaultValue: true,  description: 'Test non-root access to FPGA tools'),
+    booleanParam(name: 'test_non_root_access',                defaultValue: true, description: 'Test non-root access to FPGA tools'),
     booleanParam(name: 'test_xdma',                           defaultValue: true,  description: 'Test XDMA driver'),
     booleanParam(name: 'test_py_bindings',                    defaultValue: true,  description: 'Test Python Bindings'),
     booleanParam(name: 'test_runtime_software',               defaultValue: true,  description: 'Test precompiled AFIs'),
@@ -25,6 +25,7 @@ properties([parameters([
     booleanParam(name: 'debug_fdf_uram',                      defaultValue: false, description: 'Debug the FDF for cl_uram_example.'),
     booleanParam(name: 'fdf_ddr_comb',                        defaultValue: false, description: 'run FDF for cl_dram_dma ddr combinations.'),
     booleanParam(name: 'disable_runtime_tests',               defaultValue: false, description: 'Option to disable runtime tests.'),
+    booleanParam(name: 'disable_vitis_runtime_tests',         defaultValue: true, description: 'Option to disable runtime tests.'),
     booleanParam(name: 'use_test_ami',                        defaultValue: false, description: 'This option asks for the test AMI from Jenkins'),
     booleanParam(name: 'internal_simulations',                defaultValue: false, description: 'This option asks for default agent from Jenkins')
 ])])
@@ -49,6 +50,8 @@ boolean test_helloworld_sdaccel_example_fdf = params.get('test_helloworld_sdacce
 boolean test_all_vitis_examples_fdf = params.get('test_all_vitis_examples_fdf')
 boolean test_helloworld_vitis_example_fdf = params.get('test_helloworld_vitis_example_fdf')
 boolean disable_runtime_tests = params.get('disable_runtime_tests')
+boolean disable_vitis_runtime_tests = params.get('disable_vitis_runtime_tests')
+
 
 def runtime_sw_cl_names = ['cl_dram_dma', 'cl_hello_world', 'cl_sde']
 def dcp_recipe_cl_names = ['cl_dram_dma', 'cl_hello_world']
@@ -126,8 +129,8 @@ task_label = [
 ]
 
 // Put the latest version last
-def xilinx_versions = [ '2021.2' ]
-def vitis_versions = ['2021.2' ]
+def xilinx_versions = [ '2022.1' ]
+def vitis_versions = ['2022.1' ]
 
 // We want the default to be the latest.
 def default_xilinx_version = xilinx_versions.last()
@@ -135,7 +138,8 @@ def default_xilinx_version = xilinx_versions.last()
 def xsa_map = [
     '2020.2' : [ 'DYNAMIC':'dyn'],
     '2021.1' : [ 'DYNAMIC':'dyn'],
-    '2021.2' : [ 'DYNAMIC':'dyn']
+    '2021.2' : [ 'DYNAMIC':'dyn'],
+    '2022.1' : [ 'DYNAMIC':'dyn']
 ]
 
 def vitis_example_default_map = [
@@ -163,6 +167,12 @@ def vitis_example_default_map = [
         'gemm_blas': 'Vitis/examples/xilinx/library_examples/gemm'
     ],
     '2021.2' : [
+        'Hello_World_1ddr': 'Vitis/examples/xilinx/ocl_kernels/cl_helloworld',
+        'Gmem_2Banks_2ddr': 'Vitis/examples/xilinx/ocl_kernels/cl_gmem_2banks',
+        'Kernel_Global_Bw_4ddr': 'Vitis/examples/xilinx/performance/kernel_global_bandwidth',
+        'RTL_Vadd_Debug': 'Vitis/examples/xilinx/rtl_kernels/rtl_vadd_hw_debug'
+    ],
+    '2022.1' : [
         'Hello_World_1ddr': 'Vitis/examples/xilinx/ocl_kernels/cl_helloworld',
         'Gmem_2Banks_2ddr': 'Vitis/examples/xilinx/ocl_kernels/cl_gmem_2banks',
         'Kernel_Global_Bw_4ddr': 'Vitis/examples/xilinx/performance/kernel_global_bandwidth',
@@ -206,6 +216,12 @@ def simulator_tool_default_map = [
          'vcs': 'synopsys/vcs-mx/R-2020.12',
          'questa': 'questa/2020.4',
          'xcelium': '20.09.006'
+     ],
+     '2022.1' : [
+         'vivado': 'xilinx/Vivado/2022.1',
+         'vcs': 'synopsys/vcs/S-2021.09',
+         'questa': 'questa/2021.3',
+         'xcelium': '21.09.002'
      ]
 ]
 
@@ -415,28 +431,30 @@ def test_fpga_all_slots() {
 
 
 def test_run_non_root_access() {
-    echo "Test non-root access to FPGA tools"
-    checkout scm
+  if(test_non_root_access) {
+      echo "Test non-root access to FPGA tools"
+      checkout scm
 
-    String test = "sdk/tests/test_non_root_access.py"
-    String report_file = "test_non_root_access.xml"
+      String test = "sdk/tests/test_non_root_access.py"
+      String report_file = "test_non_root_access.xml"
 
-    try {
-        sh """
-        set -e
-        export AWS_FPGA_ALLOW_NON_ROOT=y
-        export AWS_FPGA_SDK_OVERRIDE_GROUP=y
-        source $WORKSPACE/shared/tests/bin/setup_test_sdk_env.sh
-        newgrp fpgauser
-        export SDK_DIR="${WORKSPACE}/sdk"
-        python2.7 -m pytest -v $WORKSPACE/${test} --junit-xml $WORKSPACE/${report_file}
-        """
-    } catch (exc) {
-        input message: "Non-root access test failed. Click Proceed or Abort when you are done debugging on the instance."
-        throw exc
-    } finally {
-        run_junit(report_file)
-    }
+      try {
+          sh """
+          set -e
+          export AWS_FPGA_ALLOW_NON_ROOT=y
+          export AWS_FPGA_SDK_OVERRIDE_GROUP=y
+          source $WORKSPACE/shared/tests/bin/setup_test_sdk_env.sh
+          newgrp fpgauser
+          export SDK_DIR="${WORKSPACE}/sdk"
+          python2.7 -m pytest -v $WORKSPACE/${test} --junit-xml $WORKSPACE/${report_file}
+          """
+      } catch (exc) {
+          input message: "Non-root access test failed. Click Proceed or Abort when you are done debugging on the instance."
+          throw exc
+      } finally {
+          run_junit(report_file)
+      }
+  }
 }
 
 def test_xdma_driver() {
@@ -1114,7 +1132,7 @@ if (test_helloworld_vitis_example_fdf || test_all_vitis_examples_fdf) {
 
                                     stage(run_example_stage_name) {
 
-                                        if(disable_runtime_tests) {
+                                        if(disable_vitis_runtime_tests) {
                                             echo "Runtime tests disabled. Not running ${run_example_stage_name}"
                                         } else {
                                             node(get_task_label(task: 'runtime', xilinx_version: xilinx_version)) {

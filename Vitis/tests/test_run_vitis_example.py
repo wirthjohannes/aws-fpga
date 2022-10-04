@@ -32,6 +32,8 @@ import re
 import sys
 import traceback
 import json
+import time
+
 try:
     import aws_fpga_test_utils
     from aws_fpga_test_utils.AwsFpgaTestBase import AwsFpgaTestBase
@@ -72,18 +74,29 @@ class TestRunVitisExample(AwsFpgaTestBase):
     def test_run_vitis_example(self, examplePath, rteName, xilinxVersion):
         os.chdir(self.get_vitis_example_fullpath(examplePath))
 
+        # Clear the FPGA before the vitis runtime setup i.e., before enabling MPD
+        # f1_clean_cmd = "sudo fpga-clear-local-image -S 0"
+        # logger.info("Running cmd={}".format(f1_clean_cmd))
+        # (ret, stdout_ln, stderr_ln) = self.run_cmd(f1_clean_cmd)
+        # assert ret == 0
+
         (rc, stdout_lines, stderr_lines) = self.run_cmd("make exe")
         assert rc == 0
+        time.sleep(300)
+        clear_cmd = "sudo fpga-clear-local-image -S 0"
+        logger.info("Running clear cmd={}".format(clear_cmd))
+        (ret, stdout_lines_clr, stderr_lines_clr) = self.run_cmd(clear_cmd)
+        time.sleep(300)
+        # assert ret == 0
 
         em_run_cmd = self.get_vitis_example_run_cmd(examplePath, xilinxVersion)
         check_runtime_script = os.path.join(AwsFpgaTestBase.WORKSPACE,'vitis_runtime_setup.sh')
-
+        
         self.get_vitis_aws_xclbin_file(examplePath, rteName, xilinxVersion)
-         
+
         # run_cmd = "sudo -E /bin/bash -l -c \"source {} && {} \"".format(check_runtime_script, em_run_cmd)
-        run_cmd = "source {} && sleep 1m && {}".format(check_runtime_script, em_run_cmd)
+        run_cmd = "sleep 10m && source {} && sleep 10m && {}".format(check_runtime_script, em_run_cmd)
         logger.info("Running cmd={}".format(run_cmd))
         (rc, stdout_lines, stderr_lines) = self.run_cmd(run_cmd)
         assert rc == 0
-
 

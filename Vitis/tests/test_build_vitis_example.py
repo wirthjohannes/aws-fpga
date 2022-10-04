@@ -57,6 +57,7 @@ class TestBuildVitisExample(AwsFpgaTestBase):
         AwsFpgaTestBase.setup_class(cls, __file__)
 
         AwsFpgaTestBase.assert_sdk_setup()
+
         AwsFpgaTestBase.assert_vitis_setup()
 
         return
@@ -105,7 +106,7 @@ class TestBuildVitisExample(AwsFpgaTestBase):
             if xilinxVersion >= 2019.2:
                 check_string = "run"
 
-        (rc, stdout_lines, stderr_lines) = self.run_cmd("make {0} TARGET={1} DEVICE={2} all PROFILE=yes".format(check_string, target, os.environ['AWS_PLATFORM']))
+        (rc, stdout_lines, stderr_lines) = self.run_cmd("make {0} TARGET={1} PLATFORM={2} all PROFILE=yes".format(check_string, target, os.environ['AWS_PLATFORM']))
         assert rc == 0, "Vitis build failed with rc={}".format(rc)
 
         # Check for non zero xclbin

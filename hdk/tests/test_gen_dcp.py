@@ -71,6 +71,7 @@ class TestGenDcp(AwsFpgaTestBase):
     def set_allowed_warnings(cls):
 
         cls.allowed_warnings = (
+            (('.*',), r'^WARNING: *PythonDeprecationWarning .*'),
             (('.*',), r'^WARNING: \[Constraints 18-838\] Failed to create SRL placer macro for cell SH/SH/MGT_TOP.*'),
             (('.*',), r'^WARNING: \[Shape Builder 18-838\] Failed to create SRL placer macro for cell WRAPPER_INST/SH/SH/MGT_TOP.*'),
             (('.*',), r'^WARNING: \[Common 17-576\] \'fanout_opt\' is deprecated.*'),
@@ -105,6 +106,11 @@ class TestGenDcp(AwsFpgaTestBase):
             (('.*',), r'WARNING: \[Route 35-3387\] .*'),
             (('.*',), r'WARNING: \[Synth 8-6779\] .*'),
             (('.*',), r'WARNING: \[Synth 8-7080\] .*'),
+            (('.*',), r'WARNING: \[Synth 8-9889\] .*'),
+            (('.*',), r'WARNING: \[Synth 8-9187\] .*'),
+            (('.*',), r'WARNING: \[Synth 8-9501\] .*'),
+            (('.*',), r'WARNING: \[Synth 8-10225\] .*'),
+            (('.*',), r'WARNING: \[Vivado 12-13651\] .*'),
             (('cl_sde_*',), r'WARNING: \[Vivado 12-180\] No cells matched .*'),
             (('cl_sde_*',), r'WARNING: \[Vivado 12-1008\] No clocks found for command.*'),
             (('cl_sde_*',), r'CRITICAL WARNING: \[Designutils 20-1280\] .*'),
