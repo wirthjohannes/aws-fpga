@@ -4,6 +4,10 @@
 
 ## Release 1.4.25
 * FPGA developer kit now supports Xilinx Vivado/Vitis 2022.1
+* Please note the below for this version of developer kit
+    * cl_uram example is currently not supported with 2022.1 version
+    * When loading a vitis design on an instance running HDK AFI/design, instance needs to be rebooted before loading the vitis design
+    * non-root access is unstable
 
 ## Release 1.4.24
 * AWS supports [migration](./hdk/docs/U200_to_F1_migration_HDK.md) from U200 Vivado development flow to F1 HDK flow using F1.A.1.4 shell
