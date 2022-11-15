@@ -87,7 +87,7 @@ for {set currentArgNum 0} {$currentArgNum < $argc} {incr currentArgNum} {
 		#Do Nothing
 	} else {
   		add_files ${BD_PATH}
-  		set_property is_locked true [get_files ${BD_PATH}]
+  		
 	}  
 
   read_xdc -mode out_of_context ${XDC}
